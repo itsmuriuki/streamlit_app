@@ -38,9 +38,10 @@ data_load_state.text("data was successfuly loaded....yaaww!")
 
 
 # inspect the raw data
-st.subheader("Raw Data")
-st.dataframe(data)
-# st.write(data)
+if  st.checkbox('Show Raw data'):
+    st.subheader("Raw Data")
+    # st.dataframe(data)
+    st.write(data)
 
 
 #Draw a histogram
@@ -51,6 +52,27 @@ hist_values = np.histogram(data[DATE_COLUMN].dt.hour, bins=24, range=(0,24))[0]
 
 #using streamlit to generate histogram
 st.bar_chart(hist_values)
+
+
+#plot data on the map t
+st.subheader("Map of all pickups")
+st.map(data)
+
+#show where the concentration of pickups at 17:00 are
+hour_to_filter = 17
+filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
+st.subheader(f'Map of all pickups at {hour_to_filter}:00')
+st.map(filtered_data)
+
+
+#filtering results with a slider, filtering the data in real time 
+st.subheader("Using a slider to change the hours") 
+hour_to_filter = st.slider('Hour', 0, 23, 17) #min,max and default
+filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
+st.map(filtered_data)
+
+   
+
 
 
 
